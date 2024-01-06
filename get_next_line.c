@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:09 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/05 16:04:41 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/06 21:39:31 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,52 @@ char	*get_next_line(int fd)
 {
 	static t_list	*head;
 	char			*res;
+	int				readed;
 
-	if (fd <= 0)
+	head = NULL;
+	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	readed = 1;
+	res = NULL;
+	read_and_head(fd, &head, &readed);
+	if (head == NULL)
+		return (NULL);
+	return (res);
 }
 
+void	read_and_head(int fd, t_list **head, int *readed_ptr)
+{
+	char	*buf;
+
+	buf = malloc(sizeof(char) * (BUFFER_SIZE) + 1);
+	if (buf == NULL)
+		return (NULL);
+	while (!found_new_line(*head) && *readed_ptr != 0)
+	{
+		*readed_ptr = read(fd, buf, BUFFER_SIZE);
+		if ((*head == NULL && readed_ptr == 0) || *readed_ptr == -1)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[*readed_ptr] = '\0';
+	}
+}
 /*
-	/// fd 확인하기
-	/// 1. 버퍼사이즈만큼 읽고 저장하기
-	/// 2. 남은 글자가 있는지 확인하고, 있다면 head에 저장하기
-	/// 3. 링크드 리스트를 free, del
-	/// 완전히 텍스트가 끝났다면 NULL 반환하기
-	/// 엣지 케이스 확인하기
-*/
+#include <stdio.h>
+int	main()
+{
+	int		fd;
+	char	*line;
+
+	fd = open("tests/simple", O_RDONLY);
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break;
+		printf("%s", line);
+		free(line);
+	}
+	return (0); 
+}*/

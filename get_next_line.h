@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:14 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/05 15:52:29 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/06 21:29:21 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_list
 }	t_list;
 
 /* functions */
+char	*get_next_line(int fd);
 t_list	*ft_lstlast(t_list *head);
 size_t	ft_strlen(const char *str);
 
