@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:14 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/06 21:29:21 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:08:52 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ typedef struct s_list
 
 /* functions */
 char	*get_next_line(int fd);
+void	read_and_head(int fd, t_list **head, int *readed_ptr);
+void	add_to_head(t_list **head, char *buf, int readed_ptr);
+void	extract_line(t_list *head, char **res);
+void	clean_head(t_list **head);
+
+/* utils */
+int		found_new_line(t_list *head);
+void	free_head(t_list *head);
+void	generate_line(char **res, t_list *head);
 t_list	*ft_lstlast(t_list *head);
 size_t	ft_strlen(const char *str);
 

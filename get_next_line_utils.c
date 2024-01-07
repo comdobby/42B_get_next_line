@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:05 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/06 21:45:18 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:08:53 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,21 @@ int	found_new_line(t_list *head)
 	return (0);
 }
 
+void	free_head(t_list *head)
+{
+	t_list	*current;
+	t_list	*next;
+
+	current = head;
+	while (current)
+	{
+		free(current->content);
+		next = current->next;
+		free(current);
+		current = next;
+	}
+}
+
 t_list	*ft_lstlast(t_list *head)
 {
 	t_list	*node;
@@ -48,4 +63,30 @@ size_t	ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
+}
+
+void	generate_line(char **res, t_list *head)
+{
+	int	i;
+	int	len;
+
+	len = 0;
+	while (head)
+	{
+		i = 0;
+		while (head->content[i])
+		{
+			if (head->content[i] == '\n')
+			{
+				len++;
+				break ;
+			}
+			len++;
+			i++;
+		}
+		head = head->next;
+		*res = malloc(sizeof(char) * (len + 1));
+		if (res == NULL)
+			return (NULL);
+	}
 }
