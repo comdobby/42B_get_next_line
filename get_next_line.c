@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:09 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/07 17:08:52 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:59:46 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,134 +14,133 @@
 
 char	*get_next_line(int fd)
 {
-	static t_list	*head;
-	char			*res;
-	int				readed;
+	static t_list	*temp = NULL;
+	char			*line;
 
-	head = NULL;
-	if (fd <= 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	readed = 1;
-	res = NULL;
-	read_and_head(fd, &head, &readed);
-	if (head == NULL)
+	line = NULL;
+	read_and_save_to_temp(fd, &temp);
+	if (temp == NULL)
 		return (NULL);
-	extract_line(head, &res);
-	clean_head(&head);
-	if (res[0] == '\0')
+	get_line_from_temp(temp, &line);
+	clear_temp(&temp);
+	if (line[0] == '\0')
 	{
-		free_head(head);
-		head = NULL;
-		free(res);
+		free_temp(temp);
+		temp = NULL;
+		free(line);
 		return (NULL);
 	}
-	return (res);
+	return (line);
 }
 
-void	read_and_head(int fd, t_list **head, int *readed_ptr)
+void	read_and_save_to_temp(int fd, t_list **temp)
 {
-	char	*buf;
+	char		*buf;
+	ssize_t		res_of_read;
 
-	while (!found_new_line(*head) && *readed_ptr != 0)
+	res_of_read = 1;
+	while (!check_newline(*temp) && res_of_read != 0)
 	{
-		buf = malloc(sizeof(char) * (BUFFER_SIZE) + 1);
+		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (buf == NULL)
-			return (NULL);
-		*readed_ptr = read(fd, buf, BUFFER_SIZE);
-		if ((*head == NULL && readed_ptr == 0) || *readed_ptr == -1)
+			return ;
+		res_of_read = read(fd, buf, BUFFER_SIZE);
+		if ((*temp == NULL && res_of_read == 0) || res_of_read == -1)
 		{
 			free(buf);
-			return (NULL);
+			return ;
 		}
-		buf[*readed_ptr] = '\0';
-		add_to_head(head, buf, *readed_ptr);
+		buf[res_of_read] = '\0';
+		add_to_temp(temp, buf, res_of_read);
 		free(buf);
 	}
 }
 
-void	add_to_head(t_list **head, char *buf, int readed_ptr)
+void	add_to_temp(t_list **temp, char *buf, int res_of_read)
 {
 	int		i;
 	t_list	*last;
 	t_list	*new_node;
 
 	new_node = malloc(sizeof(t_list));
-	if (!new_node)
-		return (NULL);
+	if (new_node == NULL)
+		return ;
 	new_node->next = NULL;
-	new_node->content = malloc(sizeof(char) * (readed_ptr + 1));
+	new_node->content = malloc(sizeof(char) * (res_of_read + 1));
 	if (new_node->content == NULL)
-		return (NULL);
+		return ;
 	i = 0;
-	while (buf[i] && i < readed_ptr)
+	while (buf[i] && i < res_of_read)
 	{
 		new_node->content[i] = buf[i];
 		i++;
 	}
 	new_node->content[i] = '\0';
-	if (*head == NULL)
+	if (*temp == NULL)
 	{
-		*head = new_node;
-		return (NULL);
+		*temp = new_node;
+		return ;
 	}
-	last = ft_lstlast(*head);
+	last = ft_lstlast(*temp);
 	last->next = new_node;
 }
 
-void	extract_line(t_list *head, char **res)
+void	get_line_from_temp(t_list *temp, char **line)
 {
 	int	i;
 	int	j;
 
-	if (head == NULL)
-		return (NULL);
-	generate_line(*res, head);
-	if (*res == NULL)
-		return (NULL);
-	while (head)
+	if (temp == NULL)
+		return ;
+	malloc_line(temp, line);
+	if (*line == NULL)
+		return ;
+	j = 0;
+	while (temp)
 	{
 		i = 0;
-		while (head->content[i])
+		while (temp->content[i])
 		{
-			if (head->content[i] == '\n')
+			if (temp->content[i] == '\n')
 			{
-				(*res)[j++] = head->content[i];
+				(*line)[j++] = temp->content[i];
 				break ;
 			}
-			(*res)[j++] = head->content[i++];
+			(*line)[j++] = temp->content[i++];
 		}
-		head = head->next;
+		temp = temp->next;
 	}
-	(*res)[j] = '\0';
+	(*line)[j] = '\0';
 }
 
-void	clean_head(t_list **head)
+void	clear_temp(t_list **temp)
 {
-	t_list	*last;
-	t_list	*clean_node;
 	int		i;
 	int		j;
+	t_list	*last;
+	t_list	*rest;
 
-	clean_node = malloc(sizeof(t_list));
-	if (head == NULL || clean_node == NULL)
-		return (NULL);
-	clean_node->next = NULL;
-	last = ft_lstlast(*head);
+	rest = malloc(sizeof(t_list));
+	if (temp == NULL || rest == NULL)
+		return ;
+	rest->next = NULL;
+	last = ft_lstlast(*temp);
 	i = 0;
 	while (last->content[i] && last->content[i] != '\n')
 		i++;
-	if (last->content[i] && last->content[i] == '\n')
+	if (last->content && last->content[i] == '\n')
 		i++;
-	clean_node->content = \
-	malloc(sizeof(char) * ((ft_strlen(last->content) - i) + 1));
-	if (clean_node->content == NULL)
-		return (NULL);
+	rest->content = malloc(sizeof(char) * ((ft_strlen(last->content) - i) + 1));
+	if (rest->content == NULL)
+		return ;
 	j = 0;
 	while (last->content[i])
-		clean_node->content[j++] = last->content[i++];
-	clean_node->content[j] = '\0';
-	free_head(*head);
-	*head = clean_node;
+		rest->content[j++] = last->content[i++];
+	rest->content[j] = '\0';
+	free_temp(*temp);
+	*temp = rest;
 }
 
 /*
