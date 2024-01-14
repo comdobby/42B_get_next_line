@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:09 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/14 20:01:25 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/14 20:36:56 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	add_to_temp(t_list **temp, char *buf, int res_of_read)
 	if (new_node == NULL)
 		return ;
 	new_node->next = NULL;
-	new_node->content = malloc(sizeof(char) * (res_of_read + 1));
-	if (new_node->content == NULL)
+	new_node->content = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!new_node->content)
 		return ;
 	i = 0;
 	while (buf[i] && i < res_of_read)
@@ -142,3 +142,20 @@ void	clear_temp(t_list **temp)
 	free_temp(*temp);
 	*temp = rest;
 }
+/*
+# include <stdio.h>
+int	main(void)
+{
+	const char	*path = "test.txt";
+	int	fd = open(path, O_RDONLY);
+	char	*line;
+	
+	if (fd == -1)
+		return (0);
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	printf("%s", get_next_line(fd));
+	close(fd);
+	return (0);
+}*/
