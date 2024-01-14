@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:09 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/14 19:56:42 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/14 20:01:25 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	read_and_save_to_temp(int fd, t_list **temp)
 			free(buf);
 			return ;
 		}
+		buf[res_of_read] = '\0';
 		add_to_temp(temp, buf, res_of_read);
 		free(buf);
 	}
