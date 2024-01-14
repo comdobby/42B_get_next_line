@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 15:47:09 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:59:46 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/14 19:56:42 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	read_and_save_to_temp(int fd, t_list **temp)
 			free(buf);
 			return ;
 		}
-		buf[res_of_read] = '\0';
 		add_to_temp(temp, buf, res_of_read);
 		free(buf);
 	}
@@ -130,7 +129,7 @@ void	clear_temp(t_list **temp)
 	i = 0;
 	while (last->content[i] && last->content[i] != '\n')
 		i++;
-	if (last->content && last->content[i] == '\n')
+	if (last->content[i] == '\n')
 		i++;
 	rest->content = malloc(sizeof(char) * ((ft_strlen(last->content) - i) + 1));
 	if (rest->content == NULL)
@@ -142,22 +141,3 @@ void	clear_temp(t_list **temp)
 	free_temp(*temp);
 	*temp = rest;
 }
-
-/*
-#include <stdio.h>
-int	main()
-{
-	int		fd;
-	char	*line;
-
-	fd = open("tests/simple", O_RDONLY);
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break;
-		printf("%s", line);
-		free(line);
-	}
-	return (0); 
-}*/
