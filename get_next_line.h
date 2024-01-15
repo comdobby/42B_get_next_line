@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:07:01 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 15:49:59 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 17:04:04 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 /* buffer */
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 3
 # endif
 
 /* functions */
@@ -31,7 +31,8 @@ char	*get_next_line(int fd);
 
 /* utils */
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_malloc(char *s1);
+char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 
 #endif
