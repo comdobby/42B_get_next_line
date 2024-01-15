@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:07:59 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 21:05:36 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 22:57:02 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	main(void)
 	{
 		printf("NULL\n");
 		close(fd);
-
 	}
 	while (res)
 	{
@@ -130,5 +129,4 @@ int	main(void)
 	}
 	close(fd);
 	return (0);
-}
-*/
+}*/
