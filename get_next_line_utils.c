@@ -5,63 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/05 15:47:05 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/14 19:56:43 by saeryu           ###   ########.fr       */
+/*   Created: 2024/01/15 11:08:00 by saeryu            #+#    #+#             */
+/*   Updated: 2024/01/15 15:44:03 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*ft_lstlast(t_list *head)
+char	*ft_strchr(const char *s, int c)
 {
-	t_list	*node;
-
-	node = head;
-	while (node && node->next)
-		node = node->next;
-	return (node);
+	while (*s && *s != (char)c)
+		s++;
+	if (*s == '\0' && (char)c != '\0')
+		return (NULL);
+	return ((char *)s);
 }
 
-int	check_newline(t_list *temp)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
-	t_list	*current;
+	unsigned long	i;
+	unsigned long	j;
+	char			*result;
 
-	if (temp == NULL)
-		return (0);
-	current = ft_lstlast(temp);
 	i = 0;
-	while (current->content[i])
+	j = 0;
+	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!result)
+		return (NULL);
+	while (s1 && s1[i])
 	{
-		if (current->content[i] == '\n')
-			return (1);
+		result[i] = s1[i];
 		i++;
 	}
-	return (0);
-}
-
-void	malloc_line(t_list *temp, char **line)
-{
-	int	i;
-	int	len;
-
-	len = 0;
-	while (temp)
+	while (s2 && s2[j])
 	{
-		i = 0;
-		while (temp->content[i])
-		{
-			if (temp->content[i] == '\n')
-			{
-				len++;
-				break ;
-			}
-			len++;
-			i++;
-		}
-		temp = temp->next;
+		result[i] = s2[j];
+		i++;
+		j++;
 	}
-	*line = malloc(sizeof(char) * (len + 1));
+	result[i] = '\0';
+	return (result);
 }
 
 size_t	ft_strlen(const char *s)
@@ -72,19 +55,4 @@ size_t	ft_strlen(const char *s)
 	while (s[i] != '\0')
 		i++;
 	return (i);
-}
-
-void	free_temp(t_list *temp)
-{
-	t_list	*current;
-	t_list	*next;
-
-	current = temp;
-	while (current)
-	{
-		free(current->content);
-		next = current->next;
-		free(current);
-		current = next;
-	}
 }
