@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:08:00 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 23:02:48 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 23:55:39 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,3 @@ size_t	ft_strlen(char *s)
 		i++;
 	return (i);
 }
-/*
-char	*ft_strdup(char *s1)
-{
-	int		i;
-	int		len;
-	char	*dst;
-
-	i = 0;
-	len = ft_strlen(s1);
-	dst = (char *)malloc(sizeof(char) * len + 1);
-	if (dst == NULL)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		dst[i] = s1[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}*/
