@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:07:01 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 17:04:04 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 18:21:03 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ char	*save_rest(char *text_data);
 char	*get_next_line(int fd);
 
 /* utils */
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin_malloc(char *s1);
+char	*ft_strchr(char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen(char *s);
+char	*ft_strdup(char *s1);
 
 #endif

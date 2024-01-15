@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:07:59 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 17:12:13 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 18:23:26 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 char	*read_and_save(int fd, char *text_data)
 {
-	int		size;
 	char	*buf;
+	int		res_of_read;
 
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
-	size = 1;
-	while (!ft_strchr(text_data, '\n') && size >= 0)
+	res_of_read = 1;
+	while (!ft_strchr(text_data, '\n') && res_of_read != 0)
 	{
-		size = read(fd, buf, BUFFER_SIZE);
-		if (size == -1)
+		res_of_read = read(fd, buf, BUFFER_SIZE);
+		if (res_of_read == -1)
 		{
 			free(buf);
 			free(text_data);
 			return (NULL);
 		}
-		buf[size] = '\0';
+		buf[res_of_read] = '\0';
 		text_data = ft_strjoin(text_data, buf);
 	}
 	free(buf);
@@ -39,20 +39,20 @@ char	*read_and_save(int fd, char *text_data)
 
 char	*ft_get_line(char *text_data)
 {
-	int		i;
+	size_t	i;
 	char	*line;
 
-	if (!text_data || (text_data[0] == '\0'))
+	if (!text_data || text_data[0] == '\0')
 		return (NULL);
 	i = 0;
-	while (text_data[i] != '\n' && text_data[i])
+	while (text_data[i] && text_data[i] != '\n')
 		i++;
 	i += (text_data[i] == '\n');
 	line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (text_data[i] != '\n' && text_data[i])
+	while (text_data[i] && text_data[i] != '\n')
 	{
 		line[i] = text_data[i];
 		i++;
@@ -65,39 +65,39 @@ char	*ft_get_line(char *text_data)
 
 char	*save_rest(char *text_data)
 {
-	int		len;
-	int		i;
+	size_t	i;
+	size_t	j;
 	char	*rest;
 
-	len = 0;
-	while (text_data[len] != '\n' && text_data[len])
-		len++;
-	if (!text_data[len])
+	i = 0;
+	while (text_data[i] && text_data[i] != '\n')
+		i++;
+	if (text_data[i] == '\0')
 	{
 		free(text_data);
 		return (NULL);
 	}
-	len += (text_data[len] == '\n');
-	rest = (char *)malloc(sizeof(char) * (ft_strlen(text_data) - len + 1));
+	i += (text_data[i] == '\n');
+	rest = (char *)malloc(sizeof(char) * (ft_strlen(text_data) - i + 1));
 	if (!rest)
 		return (NULL);
-	i = 0;
-	while (text_data[len + i])
+	j = 0;
+	while (text_data[i + j])
 	{
-		rest[i] = text_data[len + i];
-		i++;
+		rest[j] = text_data[i + j];
+		j++;
 	}
-	rest[i] = '\0';
+	rest[j] = '\0';
 	free(text_data);
 	return (rest);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*text_data = NULL;
+	static char	*text_data;
 	char		*line;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	text_data = read_and_save(fd, text_data);
 	if (!text_data)
@@ -114,13 +114,14 @@ int	main(void)
 	char	*res;
 	int		fd;
 
-
 	fd = open(path, O_RDONLY);
-	if (fd == 0 || fd < 0)
-		printf("error: fail to open file\n");
 	res = get_next_line(fd);
 	if (res == NULL)
-		printf("error: can't not read.\n");
+	{
+		printf("NULL\n");
+		close(fd);
+
+	}
 	while (res)
 	{
 		printf("%s",res);
