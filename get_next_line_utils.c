@@ -6,7 +6,7 @@
 /*   By: saeryu <@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:08:00 by saeryu            #+#    #+#             */
-/*   Updated: 2024/01/15 18:22:25 by saeryu           ###   ########.fr       */
+/*   Updated: 2024/01/15 21:35:40 by saeryu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,25 @@ char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
-	char	*result;
+	char	*str;
 
 	if (!s1)
-		return (ft_strdup(s2));
-	i = 0;
-	j = 0;
-	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!result)
+		return (s2);
+	if (!s1 || !s2)
 		return (NULL);
-	while (s1 && s1[i])
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	while (s2 && s2[j])
-	{
-		result[i] = s2[j];
-		i++;
-		j++;
-	}
-	result[i] = '\0';
+	str = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
+	if (!str)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (s1)
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
-	return (result);
+	return (str);
 }
 
 size_t	ft_strlen(char *s)
@@ -62,22 +58,17 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-char	*ft_strdup(char *s1)
-{
-	char		*result;
-	size_t		len;
-	size_t		i;
+// char	*ft_strdup(char *s1)
+// {
+// 	char	*dup;
+// 	size_t	len;
 
-	i = 0;
-	len = ft_strlen(s1);
-	result = (char *)malloc(sizeof(char) * (len + 1));
-	if (!result)
-		return (NULL);
-	while (i < len)
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	result[i] = '\0';
-	return (result);
-}
+// 	len = ft_strlen(s1);
+// 	dup = (char *)malloc((len + 1) * sizeof(char));
+// 	if (!dup)
+// 		return (NULL);
+// 	while (*s1)
+// 		*dup++ = *s1++;
+// 	*dup = '\0';
+// 	return (dup - len);
+// }
